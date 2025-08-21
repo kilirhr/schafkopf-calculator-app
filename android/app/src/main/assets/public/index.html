@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Schafkopf Rechner</title>
+    <!-- Lokale Stylesheets -->
+    <link href="css/tailwind.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="text-stone-800">
+
+    <div id="app-container" class="relative w-full h-full max-w-lg mx-auto bg-stone-100 shadow-2xl overflow-hidden">
+        
+        <!-- Page: Table Selection -->
+        <div id="page-table-selection" class="page page-center">
+            <header class="p-4 bg-[#4f2308] text-stone-100 flex items-center justify-between shrink-0 shadow-md">
+                <div class="flex items-center gap-4">
+                    <svg class="w-10 h-10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 9l4 2.5V17h14v-5.5L23 9l-11-7zm0 2.69L18.31 9H5.69L12 4.69zM7 15v-3.42l-2-1.25V15H7zm4 0V10h2v5h-2zm4 0h2v-4.67l-2 1.25V15z"></path></svg>
+                    <h1 class="text-2xl font-bold">Schafkopfrechner</h1>
+                </div>
+                <button id="go-to-settings-btn" class="p-2 rounded-full hover:bg-amber-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                </button>
+            </header>
+            <main class="p-4 flex-grow overflow-y-auto">
+                <h2 class="text-xl font-bold mb-4 text-white drop-shadow-lg [text-shadow:_0_1px_2px_rgb(0_0_0_/_40%)]">Meine Tische</h2>
+                <div id="table-list" class="space-y-3"></div>
+            </main>
+            <footer class="p-4 shrink-0 bg-black/10 backdrop-blur-sm">
+                <button id="add-table-btn" class="w-full px-8 py-4 bg-green-800 text-white font-bold text-xl rounded-lg shadow-lg hover:bg-green-700 transition-transform hover:scale-105 flex items-center justify-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                    Neuen Tisch anlegen
+                </button>
+            </footer>
+        </div>
+
+        <!-- Page: Game View -->
+        <div id="page-game-view" class="page page-right">
+            <header class="p-4 bg-[#4f2308] text-stone-100 flex items-center justify-between shrink-0 shadow-md">
+                <div class="flex items-center gap-2">
+                    <button id="back-to-tables-btn" class="p-2 rounded-full hover:bg-amber-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+                    <h1 id="game-view-title" class="text-2xl font-bold truncate">Tisch</h1>
+                </div>
+                <button id="go-to-table-settings-btn" class="p-2 rounded-full hover:bg-amber-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+            </header>
+            <div id="game-view-tabs" class="flex shrink-0 bg-amber-700/50">
+                <button data-tab="spiel" class="tab-btn flex-1 p-3 text-stone-100 font-bold border-b-4 border-blue-500">Spiel</button>
+                <button data-tab="stats" class="tab-btn flex-1 p-3 text-stone-200/70 font-bold border-b-4 border-transparent">Statistik</button>
+            </div>
+            <main class="flex-grow overflow-y-auto">
+                <div id="tab-content-spiel" class="p-4">
+                    <div id="scores-container" class="grid grid-cols-2 gap-3 mb-4"></div>
+                    <h2 class="text-xl font-bold mb-2 text-white/90 drop-shadow">Rundenverlauf</h2>
+                    <div id="rounds-history-container" class="space-y-2"></div>
+                </div>
+                <div id="tab-content-stats" class="p-4 hidden">
+                    <div class="bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-inner mb-4">
+                        <canvas id="score-chart"></canvas>
+                    </div>
+                    <div id="general-stats" class="space-y-4"></div>
+                </div>
+            </main>
+            <footer class="p-4 shrink-0 bg-black/10 backdrop-blur-sm">
+                <button id="new-round-btn" class="w-full px-8 py-4 bg-blue-800 text-white font-bold text-xl rounded-lg shadow-lg hover:bg-blue-700 transition-transform hover:scale-105 flex items-center justify-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    Neue Runde
+                </button>
+            </footer>
+        </div>
+
+        <!-- Page: Settings -->
+        <div id="page-settings" class="page page-right">
+            <header class="p-4 bg-[#4f2308] text-stone-100 flex items-center gap-4 shrink-0 shadow-md">
+                <button id="back-from-settings-btn" class="p-2 rounded-full hover:bg-amber-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <h1 class="text-2xl font-bold">Einstellungen</h1>
+            </header>
+            <main class="p-4 flex-grow overflow-y-auto">
+                <div class="space-y-4">
+                    <h2 class="text-xl font-bold border-b-2 border-amber-700 pb-2">Standard-Tarife</h2>
+                    <p class="text-sm text-stone-600">Diese Werte werden beim Erstellen eines neuen Tisches als Voreinstellung verwendet.</p>
+                    <div id="default-tariffs-container" class="space-y-3"></div>
+                </div>
+            </main>
+            <footer class="p-4 shrink-0 bg-stone-200/70">
+                 <button id="save-settings-btn" class="w-full px-8 py-4 bg-green-800 text-white font-bold text-xl rounded-lg shadow-lg hover:bg-green-700">
+                    Einstellungen speichern
+                </button>
+            </footer>
+        </div>
+        
+        <!-- Page: Table Settings -->
+        <div id="page-table-settings" class="page page-right">
+            <header class="p-4 bg-[#4f2308] text-stone-100 flex items-center gap-4 shrink-0 shadow-md">
+                <button id="back-from-table-settings-btn" class="p-2 rounded-full hover:bg-amber-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <h1 id="table-settings-title" class="text-2xl font-bold">Tisch-Einstellungen</h1>
+            </header>
+            <main class="p-4 flex-grow overflow-y-auto">
+                <h2 class="text-xl font-bold mb-2 text-white/90 drop-shadow">Runden bearbeiten</h2>
+                <div id="table-settings-rounds-list" class="space-y-2 mb-6"></div>
+                <h2 class="text-xl font-bold mb-2 text-white/90 drop-shadow">Gefahrenzone</h2>
+                 <button id="delete-table-btn" class="w-full p-3 bg-red-700 text-white font-bold rounded-lg shadow-lg hover:bg-red-600 flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    Diesen Tisch löschen
+                </button>
+            </main>
+        </div>
+
+    </div>
+
+    <!-- Modals -->
+    <div id="modal-container" class="fixed inset-0 modal-backdrop hidden z-50 p-4 items-start justify-center overflow-y-auto">
+        
+        <!-- Table Setup Modal -->
+        <div id="table-setup-modal" class="bg-stone-100 rounded-2xl shadow-2xl w-full max-w-lg border-4 border-amber-700 hidden">
+            <div class="p-4 border-b border-stone-300">
+                <h3 class="text-2xl font-bold text-center">Neuer Tisch</h3>
+            </div>
+            <div class="p-4 space-y-4 max-h-[70vh] overflow-y-auto">
+                <div>
+                    <label class="font-bold block mb-1">Name des Tisches</label>
+                    <input id="table-name-input" type="text" placeholder="z.B. Stammtisch" class="w-full p-2 rounded-md border border-stone-400 bg-white">
+                </div>
+                <div>
+                    <label class="font-bold block mb-1">Anzahl Spieler</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <input type="radio" name="player-count" value="4" id="player-count-4" class="choice-input" checked>
+                            <label for="player-count-4" class="choice-label">4 Spieler</label>
+                        </div>
+                        <div>
+                            <input type="radio" name="player-count" value="3" id="player-count-3" class="choice-input">
+                            <label for="player-count-3" class="choice-label">3 Spieler</label>
+                        </div>
+                    </div>
+                </div>
+                <div id="player-names-container" class="space-y-2"></div>
+                <div>
+                    <h4 class="font-bold text-lg mt-4 mb-2">Tarife (in Cent)</h4>
+                    <div id="tariffs-container" class="space-y-3"></div>
+                    <h4 class="font-bold text-lg mt-4 mb-2">Optionale Spiele</h4>
+                    <div id="optional-games-container" class="space-y-2"></div>
+                </div>
+            </div>
+            <div class="p-4 flex gap-4 bg-stone-200/50">
+                <button id="cancel-table-btn" class="flex-1 px-6 py-3 bg-stone-500 text-white rounded-lg shadow">Abbrechen</button>
+                <button id="save-table-btn" class="flex-1 px-6 py-3 bg-green-800 text-white font-bold rounded-lg shadow">Tisch speichern</button>
+            </div>
+        </div>
+
+        <!-- New Round Modal -->
+        <div id="new-round-modal" class="bg-stone-100 rounded-2xl shadow-2xl w-full max-w-lg border-4 border-amber-700 hidden">
+             <div class="p-4 border-b border-stone-300">
+                <h3 id="round-modal-title" class="text-2xl font-bold text-center">Neue Runde erfassen</h3>
+            </div>
+            <div class="p-4 space-y-4 max-h-[70vh] overflow-y-auto">
+                <div id="round-modal-error" class="hidden p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg"></div>
+                <input type="hidden" id="editing-round-id">
+                <div>
+                    <label class="font-bold block mb-2">Was wurde gespielt?</label>
+                    <select id="game-type-select" class="w-full p-3 rounded-md border border-stone-400 bg-white"></select>
+                </div>
+                <div id="standard-game-inputs">
+                    <div>
+                        <label id="winner-loser-label" class="font-bold block mb-2">Wer hat gewonnen?</label>
+                        <div id="winner-selection-container" class="grid grid-cols-2 gap-2"></div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="font-bold block mb-2">Besonderheiten:</label>
+                        <div id="modifiers-container" class="grid grid-cols-2 gap-2">
+                            <div><input id="mod-schneider" type="checkbox" class="choice-input"><label for="mod-schneider" class="choice-label">Schneider</label></div>
+                            <div><input id="mod-schwarz" type="checkbox" class="choice-input" disabled><label for="mod-schwarz" id="mod-schwarz-label" class="choice-label opacity-50">Schwarz</label></div>
+                            <div><input id="mod-kontra" type="checkbox" class="choice-input"><label for="mod-kontra" class="choice-label">Kontra</label></div>
+                            <div><input id="mod-re" type="checkbox" class="choice-input" disabled><label for="mod-re" id="mod-re-label" class="choice-label opacity-50">Re</label></div>
+                        </div>
+                        <div id="ramsch-modifiers-container" class="grid grid-cols-2 gap-2 mt-2 hidden">
+                             <div><input id="mod-durchmarsch" type="checkbox" class="choice-input"><label for="mod-durchmarsch" class="choice-label">Durchmarsch</label></div>
+                             <div><input id="mod-jungfrau" type="checkbox" class="choice-input"><label for="mod-jungfrau" class="choice-label">Jungfrau</label></div>
+                        </div>
+                        <div id="solo-modifiers-container" class="grid grid-cols-2 gap-2 mt-2 hidden">
+                            <div><input id="mod-tout" type="checkbox" class="choice-input"><label for="mod-tout" class="choice-label">Tout</label></div>
+                            <div><input id="mod-sie" type="checkbox" class="choice-input"><label for="mod-sie" class="choice-label">Sie</label></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 mt-2">
+                            <div>
+                                <label for="mod-laufende" class="block">Anzahl Laufende:</label>
+                                <input id="mod-laufende" type="number" min="0" max="8" value="0" class="w-full p-2 rounded-md border border-stone-400 bg-white" onfocus="if(this.value=='0')this.value=''">
+                            </div>
+                            <div>
+                                <label for="mod-gelegt" class="block">Gelegt / Geklopft:</label>
+                                <input id="mod-gelegt" type="number" min="0" max="4" value="0" class="w-full p-2 rounded-md border border-stone-400 bg-white" onfocus="if(this.value=='0')this.value=''">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="manual-game-inputs" class="hidden space-y-2">
+                    <p class="text-sm text-stone-600">Trage den Gewinn (+) oder Verlust (-) in Cent für jeden Spieler ein. Die Summe muss 0 sein.</p>
+                    <div id="manual-entry-container"></div>
+                    <div id="manual-sum" class="text-center font-bold mt-2 p-2 rounded-md">Summe: 0 Cent</div>
+                </div>
+                <div id="payout-preview-container" class="mt-4 p-3 bg-stone-200 rounded-lg">
+                    <h4 class="font-bold text-center mb-2">Vorschau Abrechnung</h4>
+                    <div id="payout-preview" class="space-y-1"></div>
+                </div>
+            </div>
+            <div class="p-4 flex gap-4 bg-stone-200/50">
+                <button id="cancel-round-btn" class="flex-1 px-6 py-3 bg-stone-500 text-white rounded-lg shadow">Abbrechen</button>
+                <button id="save-round-btn" class="flex-1 px-6 py-3 bg-green-800 text-white font-bold rounded-lg shadow">Runde speichern</button>
+            </div>
+        </div>
+        
+        <!-- Confirmation Modal -->
+        <div id="confirm-modal" class="bg-stone-100 rounded-2xl shadow-2xl w-full max-w-sm border-4 border-amber-700 hidden">
+            <div class="p-6 text-center">
+                <h3 id="confirm-title" class="text-xl font-bold mb-2">Bist du sicher?</h3>
+                <p id="confirm-text" class="text-stone-600 mb-6">Diese Aktion kann nicht rückgängig gemacht werden.</p>
+                <div class="flex gap-4">
+                    <button id="confirm-cancel-btn" class="flex-1 px-6 py-3 bg-stone-500 text-white rounded-lg shadow">Abbrechen</button>
+                    <button id="confirm-ok-btn" class="flex-1 px-6 py-3 bg-red-700 text-white font-bold rounded-lg shadow">Löschen</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <!-- Lokale Javascript-Dateien -->
+    <script src="js/chart.min.js"></script>
+    <script>
+    // --- CONSTANTS ---
+    const ALL_GAMES = {
+        'Sauspiel': { type: 'team', players: 2 }, 'Wenz': { type: 'solo', players: 1 }, 'Solo': { type: 'solo', players: 1 },
+        'Farbwenz': { type: 'solo', players: 1, optional: true }, 'Geier': { type: 'solo', players: 1, optional: true },
+        'Farbgeier': { type: 'solo', players: 1, optional: true }, 'Hochzeit': { type: 'team', players: 2, optional: true },
+        'Ramsch': { type: 'special', players: 1, optional: true },
+    };
+    const MANUAL_GAME_KEY = 'Manuelle Eingabe';
+
+    // --- DOM Elements ---
+    const pages = {
+        tableSelection: document.getElementById('page-table-selection'),
+        gameView: document.getElementById('page-game-view'),
+        settings: document.getElementById('page-settings'),
+        tableSettings: document.getElementById('page-table-settings'),
+    };
+    const modals = {
+        container: document.getElementById('modal-container'),
+        tableSetup: document.getElementById('table-setup-modal'),
+        newRound: document.getElementById('new-round-modal'),
+        confirm: document.getElementById('confirm-modal'),
+    };
+    const modSchneider = document.getElementById('mod-schneider');
+    const modSchwarz = document.getElementById('mod-schwarz');
+    const modSchwarzLabel = document.getElementById('mod-schwarz-label');
+
+    // --- App State ---
+    let appState = {
+        currentPage: 'tableSelection', activeTableId: null, tables: [],
+        settings: {
+            tariffs: {
+                laufende: 10, schneiderTeam: 10, schneiderSolo: 10, jungfrau: 10,
+                Sauspiel: 10, Wenz: 50, Solo: 50, Farbwenz: 50, Geier: 50, Farbgeier: 50, Hochzeit: 10, Ramsch: 10,
+            }
+        }
+    };
+
+    // --- Main App Logic ---
+    function navigate(page) {
+        appState.currentPage = page;
+        Object.values(pages).forEach(p => {
+            p.classList.remove('page-center', 'page-left');
+            p.classList.add('page-right');
+        });
+
+        if (page === 'tableSelection') {
+            pages.tableSelection.classList.add('page-center');
+            pages.tableSelection.classList.remove('page-right', 'page-left');
+        } else if (page === 'gameView') {
+            pages.gameView.classList.add('page-center');
+            pages.gameView.classList.remove('page-right', 'page-left');
+            pages.tableSelection.classList.add('page-left');
+        } else if (page === 'settings') {
+            pages.settings.classList.add('page-center');
+            pages.settings.classList.remove('page-right', 'page-left');
+            pages.tableSelection.classList.add('page-left');
+        } else if (page === 'tableSettings') {
+            pages.tableSettings.classList.add('page-center');
+            pages.tableSettings.classList.remove('page-right', 'page-left');
+            pages.gameView.classList.add('page-left');
+        }
+        render();
+    }
+
+    function render() {
+        if (appState.currentPage === 'tableSelection') renderTableList();
+        else if (appState.currentPage === 'gameView') renderGameView();
+        else if (appState.currentPage === 'settings') renderSettings();
+        else if (appState.currentPage === 'tableSettings') renderTableSettings();
+        
+        localStorage.setItem('schafkopfState', JSON.stringify(appState));
+    }
+    
+    // --- Settings Management ---
+    function renderSettings() {
+        const container = document.getElementById('default-tariffs-container');
+        container.innerHTML = '';
+        const tariffSettings = {
+            'Laufende': 'laufende', 'Schneider/Schwarz (Team)': 'schneiderTeam', 'Schneider/Schwarz (Solo)': 'schneiderSolo',
+            'Jungfrau (Ramsch)': 'jungfrau', 'Sauspiel': 'Sauspiel', 'Wenz': 'Wenz', 'Solo': 'Solo',
+            'Farbwenz': 'Farbwenz', 'Geier': 'Geier', 'Farbgeier': 'Farbgeier', 'Hochzeit': 'Hochzeit', 'Ramsch': 'Ramsch',
+        };
+        Object.entries(tariffSettings).forEach(([label, key]) => {
+            container.innerHTML += `
+                <div class="p-2 bg-white rounded-md shadow-sm"><div class="flex items-center justify-between">
+                    <span class="font-bold">${label}</span>
+                    <div class="flex items-center gap-2">
+                        <input id="default-tariff-${key}" type="number" value="${appState.settings.tariffs[key]}" class="w-20 p-1 text-right rounded-md border border-stone-400 bg-white" onfocus="this.select()">
+                        <span>Cent</span>
+                    </div></div></div>`;
+        });
+    }
+
+    function saveSettings() {
+        Object.keys(appState.settings.tariffs).forEach(key => {
+            const input = document.getElementById(`default-tariff-${key}`);
+            if (input) appState.settings.tariffs[key] = parseInt(input.value) || 0;
+        });
+        navigate('tableSelection');
+    }
+
+    // --- Table Management ---
+    function renderTableList() {
+        const tableList = document.getElementById('table-list');
+        if (appState.tables.length === 0) {
+            tableList.innerHTML = `<div class="text-center text-stone-800 p-8 bg-white/70 backdrop-blur-sm rounded-lg shadow-lg"><h3 class="text-2xl font-bold mb-2">Servus!</h3><p>Leg los und erstell deinen ersten Schafkopf-Tisch.</p></div>`;
+            return;
+        }
+        tableList.innerHTML = '';
+        appState.tables.forEach(table => {
+            const tableCard = document.createElement('div');
+            tableCard.className = 'p-4 bg-white/80 backdrop-blur-sm rounded-lg shadow-md border-l-8 border-amber-700 cursor-pointer hover:shadow-lg transition-shadow';
+            tableCard.innerHTML = `<div class="flex justify-between items-center"><div><h3 class="text-xl font-bold">${table.name}</h3><p class="text-stone-600">${table.players.map(p => p.name).join(', ')}</p></div><svg class="w-6 h-6 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></div>`;
+            tableCard.addEventListener('click', () => { appState.activeTableId = table.id; navigate('gameView'); });
+            tableList.appendChild(tableCard);
+        });
+    }
+
+    function openTableSetupModal() {
+        modals.container.classList.remove('hidden');
+        modals.container.classList.add('flex');
+        modals.tableSetup.classList.remove('hidden');
+        document.getElementById('table-name-input').value = '';
+        document.getElementById('player-count-4').checked = true;
+        renderPlayerNameInputs(4);
+        renderTariffsInputs();
+    }
+
+    function renderPlayerNameInputs(count) {
+        const container = document.getElementById('player-names-container');
+        container.innerHTML = '<h4 class="font-bold text-lg">Spielernamen</h4>';
+        for (let i = 0; i < count; i++) {
+            const defaultName = `Spieler ${i + 1}`;
+            container.innerHTML += `<input type="text" value="${defaultName}" onfocus="if(this.value=='${defaultName}')this.value=''" onblur="if(this.value=='')this.value='${defaultName}'" class="w-full p-2 rounded-md border border-stone-400 bg-white">`;
+        }
+    }
+
+    function renderTariffsInputs() {
+        const tariffsContainer = document.getElementById('tariffs-container');
+        const optionalGamesContainer = document.getElementById('optional-games-container');
+        tariffsContainer.innerHTML = '';
+        optionalGamesContainer.innerHTML = '';
+
+        const standardTariffs = {
+            'Laufende': 'laufende', 'Schneider/Schwarz (Team)': 'schneiderTeam', 'Schneider/Schwarz (Solo)': 'schneiderSolo', 'Jungfrau (Ramsch)': 'jungfrau'
+        };
+        Object.entries(standardTariffs).forEach(([label, key]) => {
+            tariffsContainer.innerHTML += `<div class="flex items-center justify-between p-2"><span class="font-bold">${label}</span><div class="flex items-center gap-2"><input id="tariff-${key}" type="number" value="${appState.settings.tariffs[key]}" class="w-20 p-1 text-right rounded-md border border-stone-400 bg-white" onfocus="this.select()"><span>Cent</span></div></div>`;
+        });
+        tariffsContainer.innerHTML += '<hr class="my-2">';
+        
+        Object.entries(ALL_GAMES).forEach(([key, game]) => {
+            const tariffInput = `<div class="flex items-center gap-2"><input id="tariff-${key}" type="number" value="${appState.settings.tariffs[key]}" class="w-20 p-1 text-right rounded-md border border-stone-400 bg-white" ${game.optional ? 'disabled' : ''} onfocus="this.select()"><span>Cent</span></div>`;
+            const targetContainer = game.optional ? optionalGamesContainer : tariffsContainer;
+            
+            if (game.optional) {
+                 targetContainer.innerHTML += `<div class="p-2 rounded bg-white border border-stone-300"><div class="flex items-center justify-between"><div><input type="checkbox" data-game="${key}" id="game-toggle-${key}" class="choice-input game-toggle-cb"><label for="game-toggle-${key}" class="choice-label !p-2 !text-base">${key}</label></div><div class="pl-4">${tariffInput}</div></div></div>`;
+            } else {
+                 tariffsContainer.innerHTML += `<div class="p-2"><div class="flex items-center justify-between"><span class="font-bold">${key}</span>${tariffInput}</div></div>`;
+            }
+        });
+
+        document.querySelectorAll('.game-toggle-cb').forEach(cb => {
+            cb.addEventListener('change', (e) => {
+                document.getElementById(`tariff-${e.target.dataset.game}`).disabled = !e.target.checked;
+            });
+        });
+    }
+    
+    function saveTable() {
+        const name = document.getElementById('table-name-input').value || 'Neuer Tisch';
+        const playerCount = parseInt(document.querySelector('input[name="player-count"]:checked').value);
+        const players = [];
+        const nameInputs = document.getElementById('player-names-container').querySelectorAll('input');
+        for (let i = 0; i < playerCount; i++) {
+            players.push({ name: nameInputs[i].value, score: 0, history: [0] });
+        }
+        const enabledGames = Object.keys(ALL_GAMES).filter(k => !ALL_GAMES[k].optional);
+        const tariffs = {
+            laufende: parseInt(document.getElementById('tariff-laufende').value),
+            schneiderTeam: parseInt(document.getElementById('tariff-schneiderTeam').value),
+            schneiderSolo: parseInt(document.getElementById('tariff-schneiderSolo').value),
+            jungfrau: parseInt(document.getElementById('tariff-jungfrau').value),
+        };
+        Object.keys(ALL_GAMES).forEach(key => {
+            const tariffInput = document.getElementById(`tariff-${key}`);
+            const cb = document.querySelector(`input[data-game="${key}"]`);
+            if (!cb) tariffs[key] = parseInt(tariffInput.value);
+            else if (cb.checked) {
+                enabledGames.push(key);
+                tariffs[key] = parseInt(tariffInput.value);
+            }
+        });
+        appState.tables.push({ id: Date.now(), name, playerCount, players, klopfer: [], settings: { enabledGames, tariffs }, rounds: [] });
+        closeModal();
+        render();
+    }
+
+    // --- Table Settings ---
+    function renderTableSettings() {
+        const table = appState.tables.find(t => t.id === appState.activeTableId);
+        if (!table) { navigate('tableSelection'); return; }
+        document.getElementById('table-settings-title').textContent = `${table.name}: Einst.`;
+        const list = document.getElementById('table-settings-rounds-list');
+        list.innerHTML = '';
+        if (table.rounds.length === 0) {
+            list.innerHTML = `<p class="text-center text-white/90 bg-black/20 p-4 rounded-lg">Keine Runden zum Bearbeiten.</p>`;
+        }
+        table.rounds.slice().reverse().forEach(round => {
+            const item = document.createElement('div');
+            item.className = 'flex items-center justify-between p-3 bg-white/80 backdrop-blur-sm rounded-lg shadow';
+            item.innerHTML = `
+                <div><span class="font-bold">${round.roundNumber}. ${round.gameType}</span></div>
+                <div class="flex gap-2">
+                    <button data-round-id="${round.id}" class="edit-round-btn p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L14.732 3.732z"></path></svg></button>
+                    <button data-round-id="${round.id}" class="delete-round-btn p-2 bg-red-600 text-white rounded-md hover:bg-red-700"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                </div>`;
+            list.appendChild(item);
+        });
+    }
+    
+    function confirmAction(title, text, onConfirm) {
+        document.getElementById('confirm-title').textContent = title;
+        document.getElementById('confirm-text').textContent = text;
+        modals.container.classList.add('flex');
+        modals.container.classList.remove('hidden');
+        modals.confirm.classList.remove('hidden');
+        
+        const confirmOkBtn = document.getElementById('confirm-ok-btn');
+        const confirmCancelBtn = document.getElementById('confirm-cancel-btn');
+        
+        const okListener = () => { onConfirm(); cleanup(); };
+        const cancelListener = () => cleanup();
+
+        function cleanup() {
+            closeModal();
+            confirmOkBtn.removeEventListener('click', okListener);
+            confirmCancelBtn.removeEventListener('click', cancelListener);
+        }
+
+        confirmOkBtn.addEventListener('click', okListener, { once: true });
+        confirmCancelBtn.addEventListener('click', cancelListener, { once: true });
+    }
+
+    function deleteTable() {
+        confirmAction('Tisch löschen?', 'Möchtest du diesen Tisch und alle zugehörigen Runden wirklich endgültig löschen?', () => {
+            appState.tables = appState.tables.filter(t => t.id !== appState.activeTableId);
+            appState.activeTableId = null;
+            navigate('tableSelection');
+        });
+    }
+
+    function deleteRound(roundId) {
+        const table = appState.tables.find(t => t.id === appState.activeTableId);
+        const round = table.rounds.find(r => r.id === roundId);
+        confirmAction('Runde löschen?', `Möchtest du Runde #${round.roundNumber} wirklich löschen?`, () => {
+            table.rounds = table.rounds.filter(r => r.id !== roundId);
+            recalculateScores(table);
+            render();
+        });
+    }
+
+    // --- Game View Rendering ---
+    function renderGameView() {
+        const table = appState.tables.find(t => t.id === appState.activeTableId);
+        if (!table) { navigate('tableSelection'); return; }
+        document.getElementById('game-view-title').textContent = table.name;
+        renderScores(table);
+        renderRoundsHistory(table);
+        renderStats(table);
+    }
+    
+    function renderScores(table) {
+        const container = document.getElementById('scores-container');
+        container.innerHTML = '';
+        table.players.forEach((player, index) => {
+            const scoreCard = document.createElement('div');
+            scoreCard.className = 'relative p-2 rounded-lg shadow text-center bg-white/80 backdrop-blur-sm border-b-4 transition-all duration-200 cursor-pointer';
+            const scoreColor = player.score >= 0 ? 'border-green-600' : 'border-red-600';
+            scoreCard.classList.add(scoreColor);
+            let klopferHtml = '';
+            if(table.klopfer.includes(index)) {
+                scoreCard.classList.add('klopfer-active');
+                klopferHtml = `<div class="coin-icon"><span>K</span></div>`;
+            }
+            scoreCard.innerHTML = `${klopferHtml}<div class="font-bold truncate">${player.name}</div><div class="text-2xl font-bold">${(player.score / 100).toFixed(2)} €</div>`;
+            scoreCard.addEventListener('click', () => toggleKlopfer(index));
+            container.appendChild(scoreCard);
+        });
+    }
+
+    function toggleKlopfer(playerIndex) {
+        const table = appState.tables.find(t => t.id === appState.activeTableId);
+        const klopferIndex = table.klopfer.indexOf(playerIndex);
+        if (klopferIndex > -1) {
+            table.klopfer.splice(klopferIndex, 1);
+        } else {
+            table.klopfer.push(playerIndex);
+        }
+        render();
+    }
+
+    function renderRoundsHistory(table) {
+        const container = document.getElementById('rounds-history-container');
+        if (table.rounds.length === 0) {
+            container.innerHTML = `<p class="text-center text-white/90 bg-black/20 p-4 rounded-lg">Noch keine Runden gespielt.</p>`;
+            return;
+        }
+        container.innerHTML = '';
+        table.rounds.slice().reverse().forEach(round => {
+            const card = document.createElement('div');
+            card.className = 'p-3 bg-white/80 backdrop-blur-sm rounded-lg shadow cursor-pointer hover:bg-white';
+            card.dataset.roundId = round.id;
+            let details = round.isManual ? ['Manuell'] : [];
+            if (!round.isManual) {
+                if (round.modifiers.sie) details.push('Sie');
+                else if (round.modifiers.tout) details.push('Tout');
+                if (round.modifiers.gelegt > 0) details.push(`${round.modifiers.gelegt}x Gelegt`);
+                if (round.modifiers.schneider) details.push('S');
+                if (round.modifiers.schwarz) details.push('SW');
+                if (round.modifiers.laufende > 0) details.push(`L${round.modifiers.laufende}`);
+                if (round.modifiers.kontra) details.push('K');
+                if (round.modifiers.re) details.push('R');
+                if (round.modifiers.durchmarsch) details.push('Durchmarsch');
+                if (round.modifiers.jungfrau) details.push('Jungfrau');
+            }
+            const winnersText = round.winners.length > 0 ? round.winners.map(idx => table.players[idx].name).join(', ') : 'Niemand';
+            const payout = round.winners.length > 0 ? round.payouts[round.winners[0]] : 0;
+            card.innerHTML = `
+                <div class="flex justify-between items-start pointer-events-none">
+                    <div><p class="font-bold">${round.roundNumber}. ${round.gameType}</p><p class="text-sm text-green-700">Gewinner: ${winnersText}</p></div>
+                    <div class="text-right"><p class="font-bold text-lg text-green-700">+${(payout / 100).toFixed(2)}€</p><p class="text-xs text-stone-500">${details.join(', ')}</p></div>
+                </div>`;
+            card.addEventListener('click', () => openNewRoundModal(round.id));
+            container.appendChild(card);
+        });
+    }
+    
+    let chartInstance = null;
+    function renderStats(table) {
+        const statsContainer = document.getElementById('general-stats');
+        if (table.rounds.length === 0) {
+            statsContainer.innerHTML = '<p class="col-span-2 text-center p-4 bg-white/80 rounded-lg">Noch keine Daten für Statistiken.</p>';
+        } else {
+            const gameTypeCounts = table.rounds.reduce((acc, round) => {
+                acc[round.gameType] = (acc[round.gameType] || 0) + 1; return acc;
+            }, {});
+            let gameCountsHtml = Object.entries(gameTypeCounts).sort((a,b) => b[1] - a[1]).map(([game, count]) => `
+                <div class="flex justify-between items-center p-2"><span>${game}</span><span class="font-bold">${count}x</span></div>`).join('');
+
+            const playerWins = table.players.map(p => ({ name: p.name, wins: 0 }));
+            table.rounds.forEach(round => {
+                round.winners.forEach(winnerIndex => { playerWins[winnerIndex].wins++; });
+            });
+            let playerWinsHtml = playerWins.sort((a,b) => b.wins - a.wins).map(p => `
+                <div class="flex justify-between items-center p-2"><span>${p.name}</span><span class="font-bold">${p.wins}</span></div>`).join('');
+
+            statsContainer.innerHTML = `
+                <div class="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow"><h3 class="font-bold mb-2 text-lg text-center">Gespielte Spiele</h3><div class="space-y-1 text-base divide-y divide-stone-200">${gameCountsHtml}</div></div>
+                <div class="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow"><h3 class="font-bold mb-2 text-lg text-center">Gewonnene Spiele</h3><div class="space-y-1 text-base divide-y divide-stone-200">${playerWinsHtml}</div></div>`;
+        }
+
+        if (chartInstance) chartInstance.destroy();
+        if (table.rounds.length === 0) return;
+        const labels = Array.from({ length: table.rounds.length + 1 }, (_, i) => `${i}`);
+        const datasets = table.players.map((player, index) => {
+            const colors = ['#0066b2', '#006400', '#de0000', '#ffcc00'];
+            return { label: player.name, data: player.history.map(score => score / 100), borderColor: colors[index % 4], tension: 0.1, fill: false };
+        });
+        const ctx = document.getElementById('score-chart').getContext('2d');
+        chartInstance = new Chart(ctx, { type: 'line', data: { labels, datasets }, options: { responsive: true, plugins: { legend: { display: true, position: 'bottom' } } } });
+    }
+
+    // --- Round Management ---
+    function openNewRoundModal(roundId = null) {
+        const table = appState.tables.find(t => t.id === appState.activeTableId);
+        if (!table) return;
+        
+        document.getElementById('round-modal-error').classList.add('hidden');
+        document.getElementById('editing-round-id').value = roundId || '';
+        const existingRound = roundId ? table.rounds.find(r => r.id === roundId) : null;
+        document.getElementById('round-modal-title').textContent = existingRound ? `Runde ${existingRound.roundNumber} bearbeiten` : 'Neue Runde erfassen';
+        
+        const gameSelect = document.getElementById('game-type-select');
+        gameSelect.innerHTML = '';
+        [...table.settings.enabledGames, MANUAL_GAME_KEY].forEach(gameKey => {
+            gameSelect.innerHTML += `<option value="${gameKey}">${gameKey}</option>`;
+        });
+        
+        if (existingRound) {
+            gameSelect.value = existingRound.gameType;
+            updateRoundModalView();
+            
+            (existingRound.winners || []).forEach(idx => {
+                const cb = document.getElementById(`player-select-${idx}`);
+                if (cb) cb.checked = true;
+            });
+            
+            Object.keys(existingRound.modifiers).forEach(mod => {
+                const el = document.getElementById(`mod-${mod}`);
+                if (el) {
+                    if (el.type === 'checkbox') el.checked = existingRound.modifiers[mod];
+                    else el.value = existingRound.modifiers[mod];
+                }
+            });
+
+            if (existingRound.isManual) {
+                existingRound.payouts.forEach((payout, index) => {
+                    document.getElementById(`manual-input-${index}`).value = payout;
+                });
+                updateManualSum();
+            }
+        } else {
+            // This is for a NEW round. Clear previous selections here.
+            document.querySelectorAll('#winner-selection-container input[name="selection"]:checked').forEach(cb => {
+                cb.checked = false;
+            });
+
+            ['mod-schneider', 'mod-schwarz', 'mod-kontra', 'mod-re', 'mod-durchmarsch', 'mod-jungfrau', 'mod-tout', 'mod-sie'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.checked = false;
+            });
+            document.getElementById('mod-laufende').value = 0;
+            document.getElementById('mod-gelegt').value = table.klopfer.length;
+            updateRoundModalView();
+        }
+        
+        updateModifierStates();
+        modals.container.classList.remove('hidden');
+        modals.container.classList.add('flex');
+        modals.newRound.classList.remove('hidden');
+    }
+    
+    function updateRoundModalView() {
+        const table = appState.tables.find(t => t.id === appState.activeTableId);
+        const gameKey = document.getElementById('game-type-select').value;
+        const gameInfo = ALL_GAMES[gameKey];
+        
+        const selectedCheckboxes = document.querySelectorAll('#winner-selection-container input[name="selection"]:checked');
+        const currentSelection = Array.from(selectedCheckboxes).map(cb => parseInt(cb.value));
+
+        const isManual = gameKey === MANUAL_GAME_KEY;
+        document.getElementById('standard-game-inputs').classList.toggle('hidden', isManual);
+        document.getElementById('manual-game-inputs').classList.toggle('hidden', !isManual);
+        document.getElementById('payout-preview-container').classList.toggle('hidden', isManual);
+        
+        const isRamsch = gameKey === 'Ramsch';
+        document.getElementById('ramsch-modifiers-container').classList.toggle('hidden', !isRamsch);
+        document.getElementById('modifiers-container').classList.toggle('hidden', isRamsch);
+        document.getElementById('solo-modifiers-container').classList.toggle('hidden', !gameInfo || gameInfo.type !== 'solo');
+
+        if (isManual) {
+            renderManualInputs(table);
+        } else {
+            updateWinnerSelection(currentSelection);
+            updateModifierStates();
+            calculateAndPreviewPayouts();
+        }
+    }
+
+    function updateModifierStates() {
+        const modKontra = document.getElementById('mod-kontra');
+        const modRe = document.getElementById('mod-re');
+        const modReLabel = document.getElementById('mod-re-label');
+        const modTout = document.getElementById('mod-tout');
+        const modSie = document.getElementById('mod-sie');
+        const modLaufende = document.getElementById('mod-laufende');
+
+        // Reset states that might be affected by this logic
+        modTout.disabled = false;
+        modSie.disabled = false;
+        modSchneider.disabled = false;
+        modLaufende.disabled = false;
+        
+        // Handle Kontra -> Re dependency
+        if (modKontra.checked) {
+            modRe.disabled = false;
+            modReLabel.classList.remove('opacity-50');
+        } else {
+            modRe.disabled = true;
+            modRe.checked = false; // Also uncheck Re if Kontra is unchecked
+            modReLabel.classList.add('opacity-50');
+        }
+
+        // Handle Tout/Sie dependencies
+        if (modSie.checked) {
+            modTout.disabled = true;
+            modTout.checked = true;
+            modSchneider.disabled = true;
+            modSchneider.checked = true;
+            modLaufende.disabled = true;
+        } else if (modTout.checked) {
+            modSie.disabled = true;
+            modSchneider.disabled = true;
+            modSchneider.checked = true;
+        }
+        
+        // Handle schwarz dependency based on schneider's final state
+        if (modSchneider.checked && !modSchneider.disabled) {
+             modSchwarz.disabled = false;
+             modSchwarzLabel.classList.remove('opacity-50');
+        } else {
+             modSchwarz.disabled = true;
+             if (!modSchneider.checked) {
+                modSchwarz.checked = false;
+             }
+             modSchwarzLabel.classList.add('opacity-50');
+        }
+    }
+
+    function renderManualInputs(table) {
+        const container = document.getElementById('manual-entry-container');
+        container.innerHTML = '';
+        table.players.forEach((player, index) => {
+            container.innerHTML += `
+                <div class="flex items-center justify-between bg-white p-2 rounded-md border border-stone-300">
+                    <label for="manual-input-${index}" class="font-bold">${player.name}</label>
+                    <div class="flex items-center gap-2">
+                         <input id="manual-input-${index}" type="number" class="manual-input w-24 p-1 text-right rounded-md border border-stone-400" placeholder="0">
+                         <span>Cent</span>
+                    </div>
+                </div>`;
+        });
+        container.querySelectorAll('.manual-input').forEach(input => {
+            input.addEventListener('input', updateManualSum);
+        });
+        updateManualSum();
+    }
+
+    function updateManualSum() {
+        const inputs = Array.from(document.querySelectorAll('.manual-input'));
+        const sum = inputs.reduce((total, input) => total + (parseInt(input.value) || 0), 0);
+        const sumDiv = document.getElementById('manual-sum');
+        sumDiv.textContent = `Summe: ${sum} Cent`;
+        sumDiv.classList.toggle('text-red-600', sum !== 0);
+        sumDiv.classList.toggle('text-green-700', sum === 0);
+        sumDiv.classList.toggle('bg-red-100', sum !== 0);
+        sumDiv.classList.toggle('bg-green-100', sum === 0);
+    }
+
+    function updateWinnerSelection(previousSelection = []) {
+        const table = appState.tables.find(t => t.id === appState.activeTableId);
+        const winnerContainer = document.getElementById('winner-selection-container');
+        const winnerLoserLabel = document.getElementById('winner-loser-label');
+        winnerContainer.innerHTML = '';
+        
+        winnerLoserLabel.textContent = 'Wer hat gewonnen?';
+
+        const inputType = 'checkbox';
+
+        table.players.forEach((player, index) => {
+            const isChecked = previousSelection.includes(index) ? 'checked' : '';
+            winnerContainer.innerHTML += `
+                <div>
+                    <input type="${inputType}" name="selection" value="${index}" id="player-select-${index}" class="choice-input" ${isChecked}>
+                    <label for="player-select-${index}" class="choice-label">${player.name}</label>
+                </div>`;
+        });
+
+        winnerContainer.querySelectorAll('input').forEach(input => {
+            input.addEventListener('change', calculateAndPreviewPayouts);
+        });
+    }
+
+    function calculateAndPreviewPayouts() {
+        const table = appState.tables.find(t => t.id === appState.activeTableId);
+        const payouts = calculatePayouts(table);
+        const previewContainer = document.getElementById('payout-preview');
+        previewContainer.innerHTML = '';
+        if (!payouts) return;
+
+        table.players.forEach((player, index) => {
+            const value = payouts[index];
+            const color = value >= 0 ? 'text-green-700' : 'text-red-700';
+            const sign = value > 0 ? '+' : '';
+            previewContainer.innerHTML += `<div class="flex justify-between text-sm"><span>${player.name}</span><span class="font-bold ${color}">${sign}${(value / 100).toFixed(2)} €</span></div>`;
+        });
+    }
+    
+    function calculatePayouts(table) {
+        const gameType = document.getElementById('game-type-select').value;
+        if (gameType === MANUAL_GAME_KEY) return null;
+        const gameInfo = ALL_GAMES[gameType];
+        
+        const selectedCheckboxes = document.querySelectorAll('input[name="selection"]:checked');
+        const selection = Array.from(selectedCheckboxes).map(cb => parseInt(cb.value));
+        if (selection.length === 0) return null;
+
+        const modifiers = {
+            schneider: document.getElementById('mod-schneider').checked,
+            schwarz: document.getElementById('mod-schwarz').checked,
+            kontra: document.getElementById('mod-kontra').checked,
+            re: document.getElementById('mod-re').checked,
+            laufende: parseInt(document.getElementById('mod-laufende').value) || 0,
+            gelegt: parseInt(document.getElementById('mod-gelegt').value) || 0,
+            durchmarsch: document.getElementById('mod-durchmarsch').checked,
+            jungfrau: document.getElementById('mod-jungfrau').checked,
+            tout: document.getElementById('mod-tout').checked,
+            sie: document.getElementById('mod-sie').checked,
+        };
+
+        const baseTariff = table.settings.tariffs[gameType];
+        const payouts = Array(table.playerCount).fill(0);
+        const winners = selection;
+        const losers = table.players.map((_, i) => i).filter(i => !winners.includes(i));
+
+        if (gameType === 'Ramsch') {
+            let lossValue = baseTariff;
+            if (modifiers.jungfrau) lossValue += table.settings.tariffs.jungfrau;
+            
+            let multiplier = Math.pow(2, modifiers.gelegt);
+            lossValue *= multiplier;
+
+            if (modifiers.durchmarsch) { // 1 winner, 3 losers
+                if (winners.length !== 1) return null;
+                const winner = winners[0];
+                losers.forEach(loserIdx => {
+                    payouts[loserIdx] = -lossValue;
+                    payouts[winner] += lossValue;
+                });
+            } else { // 3 winners, 1 loser
+                if (winners.length !== 3) return null;
+                const loser = losers[0];
+                winners.forEach(winnerIdx => {
+                    payouts[winnerIdx] = lossValue;
+                    payouts[loser] -= lossValue;
+                });
+            }
+        } else { // For Solo and Team games
+            let gameValue = baseTariff;
+            const schneiderTariff = gameInfo.type === 'team' ? table.settings.tariffs.schneiderTeam : table.settings.tariffs.schneiderSolo;
+            if (modifiers.schneider) gameValue += schneiderTariff;
+            if (modifiers.schwarz) gameValue += schneiderTariff;
+            if (!modifiers.sie) { // Laufende do not count for Sie
+                gameValue += modifiers.laufende * table.settings.tariffs.laufende;
+            }
+            
+            let multiplier = Math.pow(2, modifiers.gelegt);
+            if (modifiers.kontra) multiplier *= 2;
+            if (modifiers.re) multiplier *= 2;
+            gameValue *= multiplier;
+
+            if (modifiers.sie) {
+                gameValue *= 4;
+            } else if (modifiers.tout) {
+                gameValue *= 2;
+            }
+            
+            if (gameInfo.type === 'solo') {
+                if (winners.length === 1) { // Solo player won
+                    const winner = winners[0];
+                    losers.forEach(loserIdx => {
+                        payouts[loserIdx] = -gameValue;
+                        payouts[winner] += gameValue;
+                    });
+                } else if (winners.length === 3) { // Solo player lost
+                    const loser = losers[0];
+                    winners.forEach(winnerIdx => {
+                        payouts[winnerIdx] = gameValue;
+                        payouts[loser] -= gameValue;
+                    });
+                } else {
+                    return null; // Invalid selection for solo
+                }
+            } else if (gameInfo.type === 'team') {
+                if (winners.length > 0 && losers.length > 0) {
+                    const totalPot = gameValue * losers.length;
+                    const winPerPlayer = totalPot / winners.length;
+                    winners.forEach(idx => payouts[idx] = Math.round(winPerPlayer));
+                    losers.forEach(idx => payouts[idx] = -Math.round(gameValue));
+                }
+            }
+        }
+        return payouts;
+    }
+
+    function showModalError(message) {
+        const errorDiv = document.getElementById('round-modal-error');
+        errorDiv.textContent = message;
+        errorDiv.classList.remove('hidden');
+    }
+
+    function saveRound() {
+        document.getElementById('round-modal-error').classList.add('hidden');
+        const table = appState.tables.find(t => t.id === appState.activeTableId);
+        const gameType = document.getElementById('game-type-select').value;
+        const editingRoundId = parseInt(document.getElementById('editing-round-id').value);
+        
+        let payouts, winners, losers, isManual = false, modifiers = {};
+
+        if (gameType === MANUAL_GAME_KEY) {
+            isManual = true;
+            const inputs = Array.from(document.querySelectorAll('.manual-input'));
+            let sum = 0;
+            payouts = inputs.map(input => {
+                const val = parseInt(input.value) || 0;
+                sum += val;
+                return val;
+            });
+            if (sum !== 0) { showModalError('Die Summe der Beträge muss 0 sein!'); return; }
+            winners = payouts.map((p, i) => p > 0 ? i : -1).filter(i => i !== -1);
+            losers = payouts.map((p, i) => p < 0 ? i : -1).filter(i => i !== -1);
+        } else {
+            const gameInfo = ALL_GAMES[gameType];
+            const selectedCheckboxes = document.querySelectorAll('input[name="selection"]:checked');
+            const selection = Array.from(selectedCheckboxes).map(cb => parseInt(cb.value));
+
+            modifiers = {
+                schneider: document.getElementById('mod-schneider').checked,
+                schwarz: document.getElementById('mod-schwarz').checked,
+                kontra: document.getElementById('mod-kontra').checked,
+                re: document.getElementById('mod-re').checked,
+                laufende: parseInt(document.getElementById('mod-laufende').value) || 0,
+                gelegt: parseInt(document.getElementById('mod-gelegt').value) || 0,
+                durchmarsch: document.getElementById('mod-durchmarsch').checked,
+                jungfrau: document.getElementById('mod-jungfrau').checked,
+                tout: document.getElementById('mod-tout').checked,
+                sie: document.getElementById('mod-sie').checked,
+            };
+
+            if (selection.length === 0) { showModalError('Bitte Gewinner auswählen!'); return; }
+
+            if (gameType === 'Ramsch') {
+                if (modifiers.durchmarsch && selection.length !== 1) {
+                    showModalError('Bei einem Durchmarsch muss genau 1 Gewinner ausgewählt werden.'); return;
+                }
+                if (!modifiers.durchmarsch && selection.length !== 3) {
+                    showModalError('Bei Ramsch müssen genau 3 Gewinner ausgewählt werden.'); return;
+                }
+            } else if (gameInfo.type === 'solo') {
+                if (selection.length !== 1 && selection.length !== 3) {
+                    showModalError('Bei einem Solospiel muss 1 Gewinner (Spieler) oder 3 Gewinner (Gegenspieler) ausgewählt werden.'); return;
+                }
+            } else if (gameInfo.type === 'team') { // Sauspiel, Hochzeit
+                if (selection.length !== 2) {
+                    showModalError('Bei diesem Spiel müssen genau 2 Gewinner ausgewählt werden.'); return;
+                }
+            }
+
+            payouts = calculatePayouts(table);
+            if (!payouts) { showModalError('Fehler bei der Berechnung. Bitte Auswahl prüfen.'); return; }
+            
+            winners = selection;
+            losers = table.players.map((_, i) => i).filter(i => !winners.includes(i));
+        }
+
+        const recalculateScores = (targetTable) => {
+            targetTable.players.forEach(p => {
+                p.score = 0;
+                p.history = [0];
+            });
+            targetTable.rounds.sort((a,b) => a.id - b.id).forEach((r, index) => {
+                r.roundNumber = index + 1;
+                targetTable.players.forEach((player, pIndex) => {
+                    player.score += r.payouts[pIndex];
+                    player.history.push(player.score);
+                });
+            });
+        };
+
+        if (editingRoundId) {
+            const roundIndex = table.rounds.findIndex(r => r.id === editingRoundId);
+            if (roundIndex > -1) {
+                table.rounds[roundIndex] = { ...table.rounds[roundIndex], gameType, winners, losers, modifiers, payouts, isManual };
+            }
+        } else {
+            table.rounds.push({ id: Date.now(), roundNumber: table.rounds.length + 1, gameType, winners, losers, modifiers, payouts, isManual });
+            table.klopfer = [];
+        }
+        
+        recalculateScores(table);
+        renderGameView();
+        closeModal();
+    }
+
+    function closeModal() {
+        modals.container.classList.add('hidden');
+        modals.container.classList.remove('flex');
+        modals.tableSetup.classList.add('hidden');
+        modals.newRound.classList.add('hidden');
+        modals.confirm.classList.add('hidden');
+    }
+
+    // --- Event Listeners ---
+    document.getElementById('add-table-btn').addEventListener('click', openTableSetupModal);
+    document.getElementById('cancel-table-btn').addEventListener('click', closeModal);
+    document.getElementById('save-table-btn').addEventListener('click', saveTable);
+    document.querySelector('#table-setup-modal').addEventListener('change', e => {
+        if (e.target.name === 'player-count') {
+            renderPlayerNameInputs(parseInt(e.target.value));
+        }
+    });
+    
+    document.getElementById('go-to-settings-btn').addEventListener('click', () => navigate('settings'));
+    document.getElementById('back-from-settings-btn').addEventListener('click', () => navigate('tableSelection'));
+    document.getElementById('save-settings-btn').addEventListener('click', saveSettings);
+    
+    document.getElementById('back-to-tables-btn').addEventListener('click', () => navigate('tableSelection'));
+    document.getElementById('go-to-table-settings-btn').addEventListener('click', () => navigate('tableSettings'));
+    document.getElementById('back-from-table-settings-btn').addEventListener('click', () => navigate('gameView'));
+    document.getElementById('delete-table-btn').addEventListener('click', deleteTable);
+    document.getElementById('table-settings-rounds-list').addEventListener('click', (e) => {
+        const editBtn = e.target.closest('.edit-round-btn');
+        const deleteBtn = e.target.closest('.delete-round-btn');
+        if (editBtn) {
+            openNewRoundModal(parseInt(editBtn.dataset.roundId));
+        }
+        if (deleteBtn) {
+            deleteRound(parseInt(deleteBtn.dataset.roundId));
+        }
+    });
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const tabName = e.currentTarget.dataset.tab;
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('border-blue-500', 'text-stone-100');
+                b.classList.add('border-transparent', 'text-stone-200/70');
+            });
+            e.currentTarget.classList.add('border-blue-500', 'text-stone-100');
+            document.getElementById('tab-content-spiel').classList.toggle('hidden', tabName !== 'spiel');
+            document.getElementById('tab-content-stats').classList.toggle('hidden', tabName !== 'stats');
+        });
+    });
+
+    document.getElementById('new-round-btn').addEventListener('click', () => openNewRoundModal());
+    document.getElementById('cancel-round-btn').addEventListener('click', closeModal);
+    document.getElementById('save-round-btn').addEventListener('click', saveRound);
+    document.getElementById('game-type-select').addEventListener('change', updateRoundModalView);
+    
+    function handleModifierChange() {
+        updateModifierStates();
+        calculateAndPreviewPayouts();
+    }
+
+    modSchneider.addEventListener('change', handleModifierChange);
+    document.getElementById('mod-kontra').addEventListener('change', handleModifierChange);
+    document.getElementById('mod-tout').addEventListener('change', handleModifierChange);
+    document.getElementById('mod-sie').addEventListener('change', handleModifierChange);
+
+    document.getElementById('new-round-modal').addEventListener('change', (e) => {
+        const id = e.target.id;
+        if (id !== 'game-type-select' && id !== 'mod-schneider' && id !== 'mod-kontra' && id !== 'mod-tout' && id !== 'mod-sie') {
+            calculateAndPreviewPayouts();
+        }
+    });
+    document.getElementById('new-round-modal').addEventListener('input', (e) => {
+        if (e.target.classList.contains('manual-input')) {
+            updateManualSum();
+        } else {
+             calculateAndPreviewPayouts();
+        }
+    });
+
+    // --- Initial Load ---
+    function initialize() {
+        const savedState = localStorage.getItem('schafkopfState');
+        if (savedState) {
+            const loadedState = JSON.parse(savedState);
+            appState = {...appState, ...loadedState};
+            appState.settings.tariffs = {...appState.settings.tariffs, ...(loadedState.settings?.tariffs || {})};
+        }
+        appState.currentPage = 'tableSelection';
+        appState.activeTableId = null;
+        navigate('tableSelection');
+    }
+
+    initialize();
+    </script>
+</body>
+</html>
