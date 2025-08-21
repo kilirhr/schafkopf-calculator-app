@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Schafkopf Rechner</title>
-    <!-- Lokale Stylesheets -->
-    <link href="css/tailwind.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="./css/tailwind.css" rel="stylesheet">
+    <link href="./css/style.css" rel="stylesheet">
 </head>
 <body class="text-stone-800">
 
     <div id="app-container" class="relative w-full h-full max-w-lg mx-auto bg-stone-100 shadow-2xl overflow-hidden">
         
-        <!-- Page: Table Selection -->
         <div id="page-table-selection" class="page page-center">
             <header class="p-4 bg-[#4f2308] text-stone-100 flex items-center justify-between shrink-0 shadow-md">
                 <div class="flex items-center gap-4">
@@ -35,7 +33,6 @@
             </footer>
         </div>
 
-        <!-- Page: Game View -->
         <div id="page-game-view" class="page page-right">
             <header class="p-4 bg-[#4f2308] text-stone-100 flex items-center justify-between shrink-0 shadow-md">
                 <div class="flex items-center gap-2">
@@ -73,7 +70,6 @@
             </footer>
         </div>
 
-        <!-- Page: Settings -->
         <div id="page-settings" class="page page-right">
             <header class="p-4 bg-[#4f2308] text-stone-100 flex items-center gap-4 shrink-0 shadow-md">
                 <button id="back-from-settings-btn" class="p-2 rounded-full hover:bg-amber-700">
@@ -89,13 +85,12 @@
                 </div>
             </main>
             <footer class="p-4 shrink-0 bg-stone-200/70">
-                 <button id="save-settings-btn" class="w-full px-8 py-4 bg-green-800 text-white font-bold text-xl rounded-lg shadow-lg hover:bg-green-700">
-                    Einstellungen speichern
-                </button>
+                    <button id="save-settings-btn" class="w-full px-8 py-4 bg-green-800 text-white font-bold text-xl rounded-lg shadow-lg hover:bg-green-700">
+                        Einstellungen speichern
+                    </button>
             </footer>
         </div>
         
-        <!-- Page: Table Settings -->
         <div id="page-table-settings" class="page page-right">
             <header class="p-4 bg-[#4f2308] text-stone-100 flex items-center gap-4 shrink-0 shadow-md">
                 <button id="back-from-table-settings-btn" class="p-2 rounded-full hover:bg-amber-700">
@@ -107,19 +102,17 @@
                 <h2 class="text-xl font-bold mb-2 text-white/90 drop-shadow">Runden bearbeiten</h2>
                 <div id="table-settings-rounds-list" class="space-y-2 mb-6"></div>
                 <h2 class="text-xl font-bold mb-2 text-white/90 drop-shadow">Gefahrenzone</h2>
-                 <button id="delete-table-btn" class="w-full p-3 bg-red-700 text-white font-bold rounded-lg shadow-lg hover:bg-red-600 flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                    Diesen Tisch löschen
-                </button>
+                    <button id="delete-table-btn" class="w-full p-3 bg-red-700 text-white font-bold rounded-lg shadow-lg hover:bg-red-600 flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        Diesen Tisch löschen
+                    </button>
             </main>
         </div>
 
     </div>
 
-    <!-- Modals -->
     <div id="modal-container" class="fixed inset-0 modal-backdrop hidden z-50 p-4 items-start justify-center overflow-y-auto">
         
-        <!-- Table Setup Modal -->
         <div id="table-setup-modal" class="bg-stone-100 rounded-2xl shadow-2xl w-full max-w-lg border-4 border-amber-700 hidden">
             <div class="p-4 border-b border-stone-300">
                 <h3 class="text-2xl font-bold text-center">Neuer Tisch</h3>
@@ -156,68 +149,66 @@
             </div>
         </div>
 
-        <!-- New Round Modal -->
         <div id="new-round-modal" class="bg-stone-100 rounded-2xl shadow-2xl w-full max-w-lg border-4 border-amber-700 hidden">
-             <div class="p-4 border-b border-stone-300">
-                <h3 id="round-modal-title" class="text-2xl font-bold text-center">Neue Runde erfassen</h3>
-            </div>
-            <div class="p-4 space-y-4 max-h-[70vh] overflow-y-auto">
-                <div id="round-modal-error" class="hidden p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg"></div>
-                <input type="hidden" id="editing-round-id">
-                <div>
-                    <label class="font-bold block mb-2">Was wurde gespielt?</label>
-                    <select id="game-type-select" class="w-full p-3 rounded-md border border-stone-400 bg-white"></select>
+                <div class="p-4 border-b border-stone-300">
+                    <h3 id="round-modal-title" class="text-2xl font-bold text-center">Neue Runde erfassen</h3>
                 </div>
-                <div id="standard-game-inputs">
+                <div class="p-4 space-y-4 max-h-[70vh] overflow-y-auto">
+                    <div id="round-modal-error" class="hidden p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg"></div>
+                    <input type="hidden" id="editing-round-id">
                     <div>
-                        <label id="winner-loser-label" class="font-bold block mb-2">Wer hat gewonnen?</label>
-                        <div id="winner-selection-container" class="grid grid-cols-2 gap-2"></div>
+                        <label class="font-bold block mb-2">Was wurde gespielt?</label>
+                        <select id="game-type-select" class="w-full p-3 rounded-md border border-stone-400 bg-white"></select>
                     </div>
-                    <div class="mt-4">
-                        <label class="font-bold block mb-2">Besonderheiten:</label>
-                        <div id="modifiers-container" class="grid grid-cols-2 gap-2">
-                            <div><input id="mod-schneider" type="checkbox" class="choice-input"><label for="mod-schneider" class="choice-label">Schneider</label></div>
-                            <div><input id="mod-schwarz" type="checkbox" class="choice-input" disabled><label for="mod-schwarz" id="mod-schwarz-label" class="choice-label opacity-50">Schwarz</label></div>
-                            <div><input id="mod-kontra" type="checkbox" class="choice-input"><label for="mod-kontra" class="choice-label">Kontra</label></div>
-                            <div><input id="mod-re" type="checkbox" class="choice-input" disabled><label for="mod-re" id="mod-re-label" class="choice-label opacity-50">Re</label></div>
+                    <div id="standard-game-inputs">
+                        <div>
+                            <label id="winner-loser-label" class="font-bold block mb-2">Wer hat gewonnen?</label>
+                            <div id="winner-selection-container" class="grid grid-cols-2 gap-2"></div>
                         </div>
-                        <div id="ramsch-modifiers-container" class="grid grid-cols-2 gap-2 mt-2 hidden">
-                             <div><input id="mod-durchmarsch" type="checkbox" class="choice-input"><label for="mod-durchmarsch" class="choice-label">Durchmarsch</label></div>
-                             <div><input id="mod-jungfrau" type="checkbox" class="choice-input"><label for="mod-jungfrau" class="choice-label">Jungfrau</label></div>
-                        </div>
-                        <div id="solo-modifiers-container" class="grid grid-cols-2 gap-2 mt-2 hidden">
-                            <div><input id="mod-tout" type="checkbox" class="choice-input"><label for="mod-tout" class="choice-label">Tout</label></div>
-                            <div><input id="mod-sie" type="checkbox" class="choice-input"><label for="mod-sie" class="choice-label">Sie</label></div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4 mt-2">
-                            <div>
-                                <label for="mod-laufende" class="block">Anzahl Laufende:</label>
-                                <input id="mod-laufende" type="number" min="0" max="8" value="0" class="w-full p-2 rounded-md border border-stone-400 bg-white" onfocus="if(this.value=='0')this.value=''">
+                        <div class="mt-4">
+                            <label class="font-bold block mb-2">Besonderheiten:</label>
+                            <div id="modifiers-container" class="grid grid-cols-2 gap-2">
+                                <div><input id="mod-schneider" type="checkbox" class="choice-input"><label for="mod-schneider" class="choice-label">Schneider</label></div>
+                                <div><input id="mod-schwarz" type="checkbox" class="choice-input" disabled><label for="mod-schwarz" id="mod-schwarz-label" class="choice-label opacity-50">Schwarz</label></div>
+                                <div><input id="mod-kontra" type="checkbox" class="choice-input"><label for="mod-kontra" class="choice-label">Kontra</label></div>
+                                <div><input id="mod-re" type="checkbox" class="choice-input" disabled><label for="mod-re" id="mod-re-label" class="choice-label opacity-50">Re</label></div>
                             </div>
-                            <div>
-                                <label for="mod-gelegt" class="block">Gelegt / Geklopft:</label>
-                                <input id="mod-gelegt" type="number" min="0" max="4" value="0" class="w-full p-2 rounded-md border border-stone-400 bg-white" onfocus="if(this.value=='0')this.value=''">
+                            <div id="ramsch-modifiers-container" class="grid grid-cols-2 gap-2 mt-2 hidden">
+                                <div><input id="mod-durchmarsch" type="checkbox" class="choice-input"><label for="mod-durchmarsch" class="choice-label">Durchmarsch</label></div>
+                                <div><input id="mod-jungfrau" type="checkbox" class="choice-input"><label for="mod-jungfrau" class="choice-label">Jungfrau</label></div>
+                            </div>
+                            <div id="solo-modifiers-container" class="grid grid-cols-2 gap-2 mt-2 hidden">
+                                <div><input id="mod-tout" type="checkbox" class="choice-input"><label for="mod-tout" class="choice-label">Tout</label></div>
+                                <div><input id="mod-sie" type="checkbox" class="choice-input"><label for="mod-sie" class="choice-label">Sie</label></div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mt-2">
+                                <div>
+                                    <label for="mod-laufende" class="block">Anzahl Laufende:</label>
+                                    <input id="mod-laufende" type="number" min="0" max="8" value="0" class="w-full p-2 rounded-md border border-stone-400 bg-white" onfocus="if(this.value=='0')this.value=''">
+                                </div>
+                                <div>
+                                    <label for="mod-gelegt" class="block">Gelegt / Geklopft:</label>
+                                    <input id="mod-gelegt" type="number" min="0" max="4" value="0" class="w-full p-2 rounded-md border border-stone-400 bg-white" onfocus="if(this.value=='0')this.value=''">
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div id="manual-game-inputs" class="hidden space-y-2">
+                        <p class="text-sm text-stone-600">Trage den Gewinn (+) oder Verlust (-) in Cent für jeden Spieler ein. Die Summe muss 0 sein.</p>
+                        <div id="manual-entry-container"></div>
+                        <div id="manual-sum" class="text-center font-bold mt-2 p-2 rounded-md">Summe: 0 Cent</div>
+                    </div>
+                    <div id="payout-preview-container" class="mt-4 p-3 bg-stone-200 rounded-lg">
+                        <h4 class="font-bold text-center mb-2">Vorschau Abrechnung</h4>
+                        <div id="payout-preview" class="space-y-1"></div>
+                    </div>
                 </div>
-                <div id="manual-game-inputs" class="hidden space-y-2">
-                    <p class="text-sm text-stone-600">Trage den Gewinn (+) oder Verlust (-) in Cent für jeden Spieler ein. Die Summe muss 0 sein.</p>
-                    <div id="manual-entry-container"></div>
-                    <div id="manual-sum" class="text-center font-bold mt-2 p-2 rounded-md">Summe: 0 Cent</div>
+                <div class="p-4 flex gap-4 bg-stone-200/50">
+                    <button id="cancel-round-btn" class="flex-1 px-6 py-3 bg-stone-500 text-white rounded-lg shadow">Abbrechen</button>
+                    <button id="save-round-btn" class="flex-1 px-6 py-3 bg-green-800 text-white font-bold rounded-lg shadow">Runde speichern</button>
                 </div>
-                <div id="payout-preview-container" class="mt-4 p-3 bg-stone-200 rounded-lg">
-                    <h4 class="font-bold text-center mb-2">Vorschau Abrechnung</h4>
-                    <div id="payout-preview" class="space-y-1"></div>
-                </div>
-            </div>
-            <div class="p-4 flex gap-4 bg-stone-200/50">
-                <button id="cancel-round-btn" class="flex-1 px-6 py-3 bg-stone-500 text-white rounded-lg shadow">Abbrechen</button>
-                <button id="save-round-btn" class="flex-1 px-6 py-3 bg-green-800 text-white font-bold rounded-lg shadow">Runde speichern</button>
-            </div>
         </div>
         
-        <!-- Confirmation Modal -->
         <div id="confirm-modal" class="bg-stone-100 rounded-2xl shadow-2xl w-full max-w-sm border-4 border-amber-700 hidden">
             <div class="p-6 text-center">
                 <h3 id="confirm-title" class="text-xl font-bold mb-2">Bist du sicher?</h3>
@@ -230,9 +221,8 @@
         </div>
 
     </div>
-    
-    <!-- Lokale Javascript-Dateien -->
-    <script src="js/chart.min.js"></script>
+
+    <script src="./js/chart.min.js"></script>
     <script>
     // --- CONSTANTS ---
     const ALL_GAMES = {
@@ -312,7 +302,7 @@
         const container = document.getElementById('default-tariffs-container');
         container.innerHTML = '';
         const tariffSettings = {
-            'Laufende': 'laufende', 'Schneider/Schwarz (Team)': 'schneiderTeam', 'Schneider/Schwarz (Solo)': 'schneiderSolo',
+            'Laufende': 'laufende', 'Schneider (Team)': 'schneiderTeam', 'Schneider (Solo)': 'schneiderSolo',
             'Jungfrau (Ramsch)': 'jungfrau', 'Sauspiel': 'Sauspiel', 'Wenz': 'Wenz', 'Solo': 'Solo',
             'Farbwenz': 'Farbwenz', 'Geier': 'Geier', 'Farbgeier': 'Farbgeier', 'Hochzeit': 'Hochzeit', 'Ramsch': 'Ramsch',
         };
@@ -390,9 +380,9 @@
             const targetContainer = game.optional ? optionalGamesContainer : tariffsContainer;
             
             if (game.optional) {
-                 targetContainer.innerHTML += `<div class="p-2 rounded bg-white border border-stone-300"><div class="flex items-center justify-between"><div><input type="checkbox" data-game="${key}" id="game-toggle-${key}" class="choice-input game-toggle-cb"><label for="game-toggle-${key}" class="choice-label !p-2 !text-base">${key}</label></div><div class="pl-4">${tariffInput}</div></div></div>`;
+                targetContainer.innerHTML += `<div class="p-2 rounded bg-white border border-stone-300"><div class="flex items-center justify-between"><div><input type="checkbox" data-game="${key}" id="game-toggle-${key}" class="choice-input game-toggle-cb"><label for="game-toggle-${key}" class="choice-label !p-2 !text-base">${key}</label></div><div class="pl-4">${tariffInput}</div></div></div>`;
             } else {
-                 tariffsContainer.innerHTML += `<div class="p-2"><div class="flex items-center justify-between"><span class="font-bold">${key}</span>${tariffInput}</div></div>`;
+                tariffsContainer.innerHTML += `<div class="p-2"><div class="flex items-center justify-between"><span class="font-bold">${key}</span>${tariffInput}</div></div>`;
             }
         });
 
@@ -738,7 +728,7 @@
         } else {
              modSchwarz.disabled = true;
              if (!modSchneider.checked) {
-                modSchwarz.checked = false;
+               modSchwarz.checked = false;
              }
              modSchwarzLabel.classList.add('opacity-50');
         }
@@ -752,8 +742,8 @@
                 <div class="flex items-center justify-between bg-white p-2 rounded-md border border-stone-300">
                     <label for="manual-input-${index}" class="font-bold">${player.name}</label>
                     <div class="flex items-center gap-2">
-                         <input id="manual-input-${index}" type="number" class="manual-input w-24 p-1 text-right rounded-md border border-stone-400" placeholder="0">
-                         <span>Cent</span>
+                        <input id="manual-input-${index}" type="number" class="manual-input w-24 p-1 text-right rounded-md border border-stone-400" placeholder="0">
+                        <span>Cent</span>
                     </div>
                 </div>`;
         });
@@ -820,6 +810,7 @@
         
         const selectedCheckboxes = document.querySelectorAll('input[name="selection"]:checked');
         const selection = Array.from(selectedCheckboxes).map(cb => parseInt(cb.value));
+
         if (selection.length === 0) return null;
 
         const modifiers = {
@@ -898,7 +889,7 @@
                 } else {
                     return null; // Invalid selection for solo
                 }
-            } else if (gameInfo.type === 'team') {
+            } else if (gameInfo.type === 'team') { // Sauspiel, Hochzeit
                 if (winners.length > 0 && losers.length > 0) {
                     const totalPot = gameValue * losers.length;
                     const winPerPlayer = totalPot / winners.length;
