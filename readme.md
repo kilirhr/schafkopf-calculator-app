@@ -1,0 +1,1 @@
+Schafkopfrechner by Kilian Roehrer
