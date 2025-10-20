@@ -1,0 +1,6 @@
+{
+	"appId": "de.deinname.schafkopfrechner",
+	"appName": "Schafkopf Rechner",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
